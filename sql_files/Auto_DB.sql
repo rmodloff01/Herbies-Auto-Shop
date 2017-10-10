@@ -61,16 +61,18 @@ CREATE TABLE IF NOT EXISTS `autoshop`.`CAR` (
   `cust_id` VARCHAR(8) NOT NULL,
   `license_plate` VARCHAR(7) NOT NULL,
   PRIMARY KEY (`car_vin`),
-  CONSTRAINT `shop_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`SHOP` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `shop_id_idx` (`shop_id` ASC),
+  INDEX `cust_id_idx` (`cust_id` ASC),
+  CONSTRAINT `shop`
+    FOREIGN KEY (`shop_id`)
+    REFERENCES `autoshop`.`SHOP` (`shop_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `cust_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`CUSTOMER` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    FOREIGN KEY (`cust_id`)
+    REFERENCES `autoshop`.`CUSTOMER` (`cust_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -87,11 +89,12 @@ CREATE TABLE IF NOT EXISTS `autoshop`.`EMPLOYEE` (
   `emp_wage` VARCHAR(8) NOT NULL,
   `shop_id` INT NOT NULL,
   PRIMARY KEY (`emp_id`),
+  INDEX `shop_id_idx` (`shop_id` ASC),
   CONSTRAINT `shop_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`SHOP` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    FOREIGN KEY (`shop_id`)
+    REFERENCES `autoshop`.`SHOP` (`shop_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -113,21 +116,24 @@ CREATE TABLE IF NOT EXISTS `autoshop`.`INVOICE` (
   `inv_date` DATE NOT NULL,
   `tot_cost` DECIMAL(2) NULL,
   PRIMARY KEY (`inv_id`),
-  CONSTRAINT `car_vin`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`CAR` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `cust_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`CUSTOMER` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `emp_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`EMPLOYEE` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  INDEX `car_vin_idx` (`car_vin` ASC),
+  INDEX `cust_id_idx` (`cust_id` ASC),
+  INDEX `emp_id_idx` (`emp_id` ASC),
+  CONSTRAINT `car`
+    FOREIGN KEY (`car_vin`)
+    REFERENCES `autoshop`.`CAR` (`car_vin`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `cust`
+    FOREIGN KEY (`cust_id`)
+    REFERENCES `autoshop`.`CUSTOMER` (`cust_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `emp`
+    FOREIGN KEY (`emp_id`)
+    REFERENCES `autoshop`.`EMPLOYEE` (`emp_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -157,11 +163,12 @@ CREATE TABLE IF NOT EXISTS `autoshop`.`PART` (
   `part_num_in_inventory` VARCHAR(15) NULL DEFAULT NULL,
   `supp_id` INT NOT NULL,
   PRIMARY KEY (`part_id`, `supp_id`),
+  INDEX `supp_id_idx` (`supp_id` ASC),
   CONSTRAINT `supp_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`SUPPLIER` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    FOREIGN KEY (`supp_id`)
+    REFERENCES `autoshop`.`SUPPLIER` (`supp_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -175,16 +182,17 @@ CREATE TABLE IF NOT EXISTS `autoshop`.`PARTS_INCLUDED` (
   `part_id` VARCHAR(20) NOT NULL,
   `inv_id` INT NOT NULL,
   PRIMARY KEY (`part_id`, `inv_id`),
+  INDEX `inv_id_idx` (`inv_id` ASC),
   CONSTRAINT `part_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`PART` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    FOREIGN KEY (`part_id`)
+    REFERENCES `autoshop`.`PART` (`part_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `inv_id`
-    FOREIGN KEY ()
-    REFERENCES `autoshop`.`INVOICE` ()
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    FOREIGN KEY (`inv_id`)
+    REFERENCES `autoshop`.`INVOICE` (`inv_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
