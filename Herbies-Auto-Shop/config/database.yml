@@ -13,8 +13,10 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
+  database: 
   username: root
   password:
+  socket: /Applications/XAMPP/xamppfiles/var/mysql/mysql.sock
   host: localhost
 
 development:
